@@ -23,11 +23,11 @@ const knex = require('knex')({
 //     console.log(err)
 // })
 
-// knex('company').insert({id: 1, name: "Nvidia", position: "{latitude: 8.15644568, longitude: 4.14586455}"}).then(()=>{
+// knex('company').insert({name: "Sodexo", position: "{latitude: 5.15644568, longitude: 2.14586455}"}).then(()=>{
 //   console.log("data inserted")
 // })
 
-// knex('products').insert({id: 1, name: "Mozarella", qrcode: "", quantity: 55, id_company: 1}).then(()=>{
+// knex('products').insert({name: "RTX 3080 TI", item_id: "", quantity: 25, id_company: 2}).then(()=>{
 //   console.log("data inserted")
 // })
 
@@ -39,6 +39,12 @@ app.get('/products', (req, res) => {
 
 app.get('/company', (req, res) => {
   knex("company").select('*').then((company)=>{
+    res.json(company)
+  })
+})
+
+app.get('/company/:id', (req, res) => {
+  knex("company").where({id: req.params.id}).select('*').then((company)=>{
     res.json(company)
   })
 })
