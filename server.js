@@ -2,16 +2,16 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const knex = require('knex')({
-    client: 'mssql',
+    client: 'pg',
     connection: {
-      server : process.env.DB_HOST,
+      host : process.env.DB_HOST,
       user : process.env.DB_USER,
       password : process.env.DB_PASSWORD,
-      options: {
-        port: parseInt(process.env.DB_PORT),
-        database : process.env.DB_NAME,
-        encrypt: true
-        }
+      port: parseInt(process.env.DB_PORT),
+      database : process.env.DB_NAME,
+      ssl: {
+        rejectUnauthorized: false
+      }
     }
 })
 
@@ -23,11 +23,11 @@ const knex = require('knex')({
 //     console.log(err)
 // })
 
-// knex('company').insert({name: "Nvidia", position: "{latitude: 8.15644568, longitude: 4.14586455}"}).then(()=>{
+// knex('company').insert({id: 1, name: "Nvidia", position: "{latitude: 8.15644568, longitude: 4.14586455}"}).then(()=>{
 //   console.log("data inserted")
 // })
 
-// knex('products').insert({name: "Mozarella", qrcode: "", quantity: 55, id_company: 1}).then(()=>{
+// knex('products').insert({id: 1, name: "Mozarella", qrcode: "", quantity: 55, id_company: 1}).then(()=>{
 //   console.log("data inserted")
 // })
 
@@ -42,7 +42,6 @@ app.get('/company', (req, res) => {
     res.json(company)
   })
 })
-
 
 
 app.listen(process.env.PORT, () => {
