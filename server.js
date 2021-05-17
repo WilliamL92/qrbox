@@ -56,7 +56,7 @@ app.get('/company/:id', (req, res) => {
 // })
 
 app.get('/products/:id', (req, res) => {
-  knex.select('*').from('products').leftJoin("company","company.id","products.id_company").where({item_id: req.params.id}).then((products)=>{
+  knex.select('products.*','company.name as company_name').from('products').leftJoin("company","company.id","products.id_company").where({item_id: req.params.id}).then((products)=>{
     res.json(products)
   })
 })
