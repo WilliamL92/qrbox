@@ -49,6 +49,12 @@ app.get('/company/:id', (req, res) => {
   })
 })
 
+app.get('/products/:id', (req, res) => {
+  knex("products").where({item_id: req.params.id}).select('*').then((products)=>{
+    res.json(products)
+  })
+})
+
 
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening at http://localhost:${process.env.PORT}`)
