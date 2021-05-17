@@ -27,7 +27,7 @@ const knex = require('knex')({
 //   console.log("data inserted")
 // })
 
-// knex('products').insert({name: "RTX 3080 TI", item_id: "", quantity: 25, id_company: 2}).then(()=>{
+// knex('products').insert({name: "Spaghetti", item_id: "2222", quantity: 25, id_company: 1}).then(()=>{
 //   console.log("data inserted")
 // })
 
@@ -49,8 +49,14 @@ app.get('/company/:id', (req, res) => {
   })
 })
 
+// app.get('/products/:id', (req, res) => {
+//   knex.select('*').from('products').where({item_id: req.params.id}).then((products)=>{
+//     res.json(products)
+//   })
+// })
+
 app.get('/products/:id', (req, res) => {
-  knex("products").leftJoin('company','products.id_company','company.id').where({item_id: req.params.id}).select('*').then((products)=>{
+  knex.select('*').from('products').leftJoin("company","company.id","products.id_company").where({item_id: req.params.id}).then((products)=>{
     res.json(products)
   })
 })
