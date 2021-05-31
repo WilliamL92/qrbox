@@ -107,6 +107,21 @@ app.get('/approvisionnement', (req, res)=>{
   
 })
 
+app.get('/insertProducts', (req, res)=>{
+  // knex('company').insert({name: req.query.company, }).then((id)=>{
+  //   knex('products').insert({name: req.query.company,
+    
+  //   })
+  // })
+  knex("company").where({name: req.query.company}).select('id').then((company)=>{
+    knex('products').insert({name: req.query.product, item_id: req.query.item_id, quantity: 0, id_company: company[0].id, quantity_entrepot: req.query.quantity}).then((e)=>{
+      res.send(e)
+    }).catch((e)=>{
+      res.send(`error: ${e}`)
+    })
+  })
+})
+
 
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening at http://localhost:${process.env.PORT}`)
