@@ -122,6 +122,10 @@ app.get('/insertProducts', (req, res)=>{
   })
 })
 
+app.post('/insertproducts', (res, res)=>{
+  res.send("success ! (Joan làche ce poulet !)")
+})
+
 
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening at http://localhost:${process.env.PORT}`)
