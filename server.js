@@ -64,13 +64,13 @@ app.get('/approvisionnement', (req, res)=>{
   knex('products').where({name: req.query.name}).select('*').then((products)=>{
     if(req.query.id == 1){
       textPart = `Une livraison contenant ${req.query.name} est arrivé !`
-      htmlPart = `<p>L'article ${req.query.name} a été réapprovisionné. Le stock en entrepôt est désormais de ${(parseInt(req.query.quantity) + parseInt(products[0].quantity_entrepot))}</p>`
+      htmlPart = `<p>L'article ${req.query.name} a été réapprovisionné. Le stock en entrepôt est désormais de ${(parseInt(req.query.quantity) + parseInt(products[0].quantity_entrepot))}</p><br><div style="display: flex; flex-direction: row; flexwrap: wrap; align-items: flex-end;"><img width="35" height="35"style="border-radius: 7px;" src="https://qrboxstorage.s3.eu-west-3.amazonaws.com/QR'box.png" alt="logo">&nbsp;<b><p style="font-size: 11px;">L'équipe QRBOX vous remercie pour votre confiance.</p></b></div>`
       knex('products').where({name: req.query.name}).update({quantity_entrepot: (parseInt(req.query.quantity) + parseInt(products[0].quantity_entrepot))}).then(()=>{
       })
     }
     else if(req.query.id == 2){
       textPart = `Une livraison contenant ${req.query.name} est arrivé !`
-      htmlPart = `<p>L'article ${req.query.name} a été réapprovisionné en rayon. Le stock en rayon est désormais de ${(parseInt(req.query.quantity) + parseInt(products[0].quantity))}</p>`
+      htmlPart = `<p>L'article ${req.query.name} a été réapprovisionné en rayon. Le stock en rayon est désormais de ${(parseInt(req.query.quantity) + parseInt(products[0].quantity))}</p><br><div style="display: flex; flex-direction: row; flexwrap: wrap; align-items: flex-end;"><img width="35" height="35"style="border-radius: 7px;" src="https://qrboxstorage.s3.eu-west-3.amazonaws.com/QR'box.png" alt="logo">&nbsp;<b><p style="font-size: 11px;">L'équipe QRBOX vous remercie pour votre confiance.</p></b></div>`
       knex('products').where({name: req.query.name}).update({quantity: (parseInt(req.query.quantity) + parseInt(products[0].quantity))}).then(()=>{
       })
     }
