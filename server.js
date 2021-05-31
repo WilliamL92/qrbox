@@ -58,38 +58,53 @@ app.get('/products/:id', (req, res) => {
   })
 })
 
-app.get('/options', (req, res)=>{
-  let mail = req.query.email
-  let idOption = req.query.id
-  const request = mailjet
-  .post("send", {'version': 'v3.1'})
-  .request({
-    "Messages":[
-      {
-        "From": {
-          "Email": "william.lavit@efrei.net",
-          "Name": "Qrbox"
-        },
-        "To": [
-          {
-            "Email": mail,
+app.get('/approvisionnement', (req, res)=>{
+  let htmlPart = ""
+  let textPart = ""
+  knex('products').where({name: req.query.name}).select('*').then((products)=>{
+    if(req.query.id == 1){
+      textPart = `Une livraison contenant ${req.query.name} est arrivé !`
+      htmlPart = `<p>L'article ${req.query.name} a été réapprovisionné. Le stock en entrepôt est désormais de ${(parseInt(req.query.quantity) + parseInt(products[0].quantity_entrepot))}</p>`
+      knex('products').where({name: req.query.name}).update({quantity_entrepot: (parseInt(req.query.quantity) + parseInt(products[0].quantity_entrepot))}).then(()=>{
+      })
+    }
+    else if(req.query.id == 2){
+      textPart = `Une livraison contenant ${req.query.name} est arrivé !`
+      htmlPart = `<p>L'article ${req.query.name} a été réapprovisionné en rayon. Le stock en rayon est désormais de ${(parseInt(req.query.quantity) + parseInt(products[0].quantity))}</p>`
+      knex('products').where({name: req.query.name}).update({quantity: (parseInt(req.query.quantity) + parseInt(products[0].quantity))}).then(()=>{
+      })
+    }
+    const request = mailjet
+    .post("send", {'version': 'v3.1'})
+    .request({
+      "Messages":[
+        {
+          "From": {
+            "Email": "william.lavit@efrei.net",
             "Name": "Qrbox"
-          }
-        ],
-        "Subject": "QRBOX",
-        "TextPart": "QRBOX",
-        "HTMLPart": `<h3>Vous avez choisi l'option ${idOption}</h3><h2>Modification effectué avec succès !</h2>`,
-        "CustomID": "AppGettingStartedTest"
-      }
-    ]
+          },
+          "To": [
+            {
+              "Email": req.query.email,
+              "Name": "Qrbox"
+            }
+          ],
+          "Subject": textPart,
+          "TextPart": "QRBOX",
+          "HTMLPart": htmlPart,
+          "CustomID": "AppGettingStartedTest"
+        }
+      ]
+    })
+    request
+    .then((result) => {
+      res.json(result.body)
+    })
+    .catch((err) => {
+      res.json(`error: ${err.statusCode}`)
+    })
   })
-  request
-  .then((result) => {
-    res.json(result.body)
-  })
-  .catch((err) => {
-    res.json(`error: ${err.statusCode}`)
-  })
+  
 })
 
 
