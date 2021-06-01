@@ -105,7 +105,7 @@ app.get('/insertProducts', (req, res)=>{
 })
 
 app.post('/insertproducts', (req, res)=>{
-  res.send("success")
+  res.send(`success ${req.body}`)
 })
 
 
