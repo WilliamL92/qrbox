@@ -1,7 +1,6 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
-const qrcode = require('qrcode')
 const knex = require('knex')({
     client: 'pg',
     connection: {
@@ -39,6 +38,7 @@ app.get('/products', (req, res) => {
     res.json(products)
   })
 })
+
 
 app.get('/company', (req, res) => {
   knex("company").select('*').then((company)=>{
@@ -123,7 +123,7 @@ app.get('/insertProducts', (req, res)=>{
 })
 
 app.post('/insertproducts', (res, res)=>{
-  res.send("success ! (Joan làche ce poulet !)")
+  res.send("success")
 })
 
 
