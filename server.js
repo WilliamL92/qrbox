@@ -15,6 +15,12 @@ const knex = require('knex')({
     }
 })
 
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+)
+
 // let cpny = ["Mozarella", "RTX 3080 TI", "Carbonara", "Vivobook", "Surface pro", "Macbook pro", "Pâte à tartiner", "Ecran 244Hz", "Spaghetti", "Lasagne surgelé", "Souris gamer"]
 
 // const mailjet = require ('node-mailjet')
