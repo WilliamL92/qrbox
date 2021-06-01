@@ -26,11 +26,8 @@ app.use(express.json())
 
 // let cpny = ["Mozarella", "RTX 3080 TI", "Carbonara", "Vivobook", "Surface pro", "Macbook pro", "Pâte à tartiner", "Ecran 244Hz", "Spaghetti", "Lasagne surgelé", "Souris gamer"]
 
-// const mailjet = require ('node-mailjet')
-// .connect(process.env.MAIL_PUBLIC_KEY, process.env.MAIL_PRIVATE_KEY)
-
 // for(let i = 1; i <= 11; i++){
-//   knex('products').where({id: i}).update({item_id: `${i}${i+1}${i-1}`}).then(()=>{
+//   knex('products').where({id: i}).update({quantity_entrepot: i*3}).then(()=>{
 //     console.log(`done id: ${i}`)
 //   })
 // }
@@ -72,35 +69,41 @@ app.get('/approvisionnement', (req, res)=>{
       knex('products').where({name: req.query.name}).update({quantity: (parseInt(req.query.quantity) + parseInt(products[0].quantity))}).then(()=>{
       })
     }
-    const request = mailjet
-    .post("send", {'version': 'v3.1'})
-    .request({
-      "Messages":[
-        {
-          "From": {
-            "Email": "william.lavit@efrei.net",
-            "Name": "Qrbox"
-          },
-          "To": [
-            {
-              "Email": req.query.email,
+    if(textPart != ""){
+      const request = mailjet
+      .post("send", {'version': 'v3.1'})
+      .request({
+        "Messages":[
+          {
+            "From": {
+              "Email": "william.lavit@efrei.net",
               "Name": "Qrbox"
-            }
-          ],
-          "Subject": textPart,
-          "TextPart": "QRBOX",
-          "HTMLPart": htmlPart,
-          "CustomID": "AppGettingStartedTest"
-        }
-      ]
-    })
-    request
-    .then((result) => {
-      res.json(result.body)
-    })
-    .catch((err) => {
-      res.json(`error: ${err.statusCode}`)
-    })
+            },
+            "To": [
+              {
+                "Email": req.query.email,
+                "Name": "Qrbox"
+              }
+            ],
+            "Subject": textPart,
+            "TextPart": "QRBOX",
+            "HTMLPart": htmlPart,
+            "CustomID": "AppGettingStartedTest"
+          }
+        ]
+      })
+      request
+      .then((result) => {
+        res.json(result.body)
+      })
+      .catch((err) => {
+        res.json(`error: ${err.statusCode}`)
+      })
+    }
+    else {
+      res.send(`id invalid`)
+    }
+    
   })
   
 })
@@ -110,6 +113,14 @@ app.get('/insertProducts', (req, res)=>{
     res.send(e)
   }).catch((e)=>{
     res.send(`error: ${e}`)
+  })
+})
+
+app.get('/editProduct', (req, res)=>{
+  knex('products').where({id: req.query.id}).update({quantity_rayon: req.query.quantity_rayon, quantity_entrepot: req.query.quantity_entrepot}).then((e)=>{
+    res.send(`success ${e}`)
+  }).catch((e)=>{
+    res.send(`error ${e}`)
   })
 })
 
