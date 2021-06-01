@@ -133,9 +133,9 @@ app.get('/editProduct', (req, res)=>{
                 "Name": "Qrbox"
               }
             ],
-            "Subject": `Modification du stock`,
+            "Subject": `Modification du stock de l'article ${req.query.product}`,
             "TextPart": "QRBOX",
-            "HTMLPart": `<p>Le stock entrepot est désormais de ${req.query.quantity_entrepot}: </p><p>Le stock rayon est désormais de ${req.query.quantity_rayon}: </p><br><br><div style="display: flex; flex-direction: row; flexwrap: wrap; align-items: flex-end;"><img width="35" height="35"style="border-radius: 7px;" src="https://qrboxstorage.s3.eu-west-3.amazonaws.com/QR'box.png" alt="logo">&nbsp;<b><p style="font-size: 11px;">L'équipe QRBOX vous remercie pour votre confiance.</p></b></div>`,
+            "HTMLPart": `<p>Le stock entrepot est désormais de ${req.query.quantity_entrepot}</p><p>Le stock rayon est désormais de ${req.query.quantity_rayon}</p><br><br><div style="display: flex; flex-direction: row; flexwrap: wrap; align-items: flex-end;"><img width="35" height="35"style="border-radius: 7px;" src="https://qrboxstorage.s3.eu-west-3.amazonaws.com/QR'box.png" alt="logo">&nbsp;<b><p style="font-size: 11px;">L'équipe QRBOX vous remercie pour votre confiance.</p></b></div>`,
             "CustomID": "AppGettingStartedTest"
           }
         ]
