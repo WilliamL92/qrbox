@@ -14,6 +14,7 @@ const knex = require('knex')({
       }
     }
 })
+const mailjet = require('node-mailjet').connect(process.env.MAIL_PUBLIC_KEY, process.env.MAIL_PRIVATE_KEY)
 
 app.use(
   express.urlencoded({
