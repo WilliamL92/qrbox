@@ -15,14 +15,16 @@ const knex = require('knex')({
     }
 })
 
-const mailjet = require ('node-mailjet')
-.connect(process.env.MAIL_PUBLIC_KEY, process.env.MAIL_PRIVATE_KEY)
+// let cpny = ["Mozarella", "RTX 3080 TI", "Carbonara", "Vivobook", "Surface pro", "Macbook pro", "Pâte à tartiner", "Ecran 244Hz", "Spaghetti", "Lasagne surgelé", "Souris gamer"]
 
-// qrcode.toDataURL("3", function (err, url) {
-//   knex('products').where('id', "3").update({item_id: url}).then(()=>{
-//     console.log(url)
+// const mailjet = require ('node-mailjet')
+// .connect(process.env.MAIL_PUBLIC_KEY, process.env.MAIL_PRIVATE_KEY)
+
+// for(let i = 1; i <= 11; i++){
+//   knex('products').where({id: i}).update({item_id: `${i}${i+1}${i-1}`}).then(()=>{
+//     console.log(`done id: ${i}`)
 //   })
-// })
+// }
 
 
 // knex('company').insert({name: "Sodexo", position: "{latitude: 5.15644568, longitude: 2.14586455}"}).then(()=>{
@@ -39,21 +41,8 @@ app.get('/products', (req, res) => {
   })
 })
 
-
-app.get('/company', (req, res) => {
-  knex("company").select('*').then((company)=>{
-    res.json(company)
-  })
-})
-
-app.get('/company/:id', (req, res) => {
-  knex("company").where({id: req.params.id}).select('*').then((company)=>{
-    res.json(company)
-  })
-})
-
 app.get('/products/:id', (req, res) => {
-  knex.select('products.*','company.name as company_name').from('products').leftJoin("company","company.id","products.id_company").where({item_id: req.params.id}).then((products)=>{
+  knex.select('*').from('products').where({item_id: req.params.id}).then((products)=>{
     res.json(products)
   })
 })
@@ -108,17 +97,10 @@ app.get('/approvisionnement', (req, res)=>{
 })
 
 app.get('/insertProducts', (req, res)=>{
-  // knex('company').insert({name: req.query.company, }).then((id)=>{
-  //   knex('products').insert({name: req.query.company,
-    
-  //   })
-  // })
-  knex("company").where({name: req.query.company}).select('id').then((company)=>{
-    knex('products').insert({name: req.query.product, item_id: req.query.item_id, quantity: 0, id_company: company[0].id, quantity_entrepot: req.query.quantity}).then((e)=>{
-      res.send(e)
-    }).catch((e)=>{
-      res.send(`error: ${e}`)
-    })
+  knex('products').insert({name: req.query.product, item_id: req.query.item_id, quantity_rayon: 0, quantity_entrepot: req.query.quantity_entrepot, company_name: req.query.company}).then((e)=>{
+    res.send(e)
+  }).catch((e)=>{
+    res.send(`error: ${e}`)
   })
 })
 
