@@ -34,9 +34,10 @@ const mailjet = require ('node-mailjet')
 // })
 
 app.get('/products', (req, res) => {
-  knex("products").select('*').then((products)=>{
-    res.json(products)
-  })
+  // knex("products").select('*').then((products)=>{
+  //   res.json(products)
+  // })
+  res.send('test')
 })
 
 
@@ -122,7 +123,7 @@ app.get('/insertProducts', (req, res)=>{
   })
 })
 
-app.post('/insertproducts', (res, res)=>{
+app.post('/insertproducts', (req, res)=>{
   res.send("success")
 })
 
