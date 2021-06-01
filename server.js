@@ -118,6 +118,31 @@ app.get('/insertProducts', (req, res)=>{
 
 app.get('/editProduct', (req, res)=>{
   knex('products').where({id: req.query.id}).update({quantity_rayon: req.query.quantity_rayon, quantity_entrepot: req.query.quantity_entrepot}).then((e)=>{
+    const request = mailjet
+      .post("send", {'version': 'v3.1'})
+      .request({
+        "Messages":[
+          {
+            "From": {
+              "Email": "william.lavit@efrei.net",
+              "Name": "Qrbox"
+            },
+            "To": [
+              {
+                "Email": "joan.smith@hotmail.fr",
+                "Name": "Qrbox"
+              }
+            ],
+            "Subject": `Modification du stock`,
+            "TextPart": "QRBOX",
+            "HTMLPart": `<p>Le stock entrepot est désormais de ${req.query.quantity_entrepot}: </p><p>Le stock rayon est désormais de ${req.query.quantity_rayon}: </p><br><br><div style="display: flex; flex-direction: row; flexwrap: wrap; align-items: flex-end;"><img width="35" height="35"style="border-radius: 7px;" src="https://qrboxstorage.s3.eu-west-3.amazonaws.com/QR'box.png" alt="logo">&nbsp;<b><p style="font-size: 11px;">L'équipe QRBOX vous remercie pour votre confiance.</p></b></div>`,
+            "CustomID": "AppGettingStartedTest"
+          }
+        ]
+      })
+      request
+      .then((result) => {
+      })
     res.send(`success ${e}`)
   }).catch((e)=>{
     res.send(`error ${e}`)
